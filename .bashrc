@@ -1,1 +1,1 @@
-./dotfiles/bashrc
+dotfiles/bashrc
