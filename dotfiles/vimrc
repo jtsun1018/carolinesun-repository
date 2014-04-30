@@ -7,30 +7,38 @@ call vundle#rc()
 
 Bundle 'gmarik/vundle'
 
-Bundle 'git://github.com/vim-scripts/OmniCppComplete'
-Bundle 'git://github.com/Twinside/vim-cuteErrorMarker'
 Bundle 'git://github.com/Townk/vim-autoclose'
 Bundle 'git://github.com/majutsushi/tagbar.git'
+Bundle 'git://github.com/Lokaltog/vim-easymotion'
+Bundle 'git://github.com/Lokaltog/powerline'
+Bundle 'git://github.com/scrooloose/nerdcommenter'
+Bundle 'git://github.com/ervandew/supertab'
+Bundle 'git://github.com/tpope/vim-surround'
+Bundle 'git://github.com/kchmck/vim-coffee-script'
+Bundle 'git://github.com/vim-scripts/YankRing.vim'
+
+Bundle 'git://github.com/msanders/snipmate.vim'
+Bundle 'git://github.com/vim-scripts/AutoComplPop'
+
+" shows a git diff in the 'gutter' (sign column)
+Bundle 'git://github.com/airblade/vim-gitgutter'
+" Display a mark on lines which contain compilation errors listed on the quickfix window.
+Bundle 'git://github.com/Twinside/vim-cuteErrorMarker'
+" Vim-script library
 Bundle 'git://github.com/vim-scripts/L9.git'
+" quickly reach the buffer/file/command/bookmark/tag
 Bundle 'git://github.com/vim-scripts/FuzzyFinder.git'
+" 直接在vim裡顯示CSS色碼所代表的顏色
 Bundle 'git://github.com/ap/vim-css-color.git'
 " super usefull grep tool
 Bundle 'git://github.com/vim-scripts/EasyGrep.git'
 Bundle 'git://github.com/scrooloose/nerdtree.git'
-
 " PHP PSR Fixer
-Bundle 'git@github.com:stephpy/vim-php-cs-fixer.git'
-
-
-" For pathogen.vim: auto load all plugins in .vim/bundle
-
-"let g:pathogen_disabled = []
-"if !has('gui_running')
-"   call add(g:pathogen_disabled, 'powerline')
-"endif
-
-"call pathogen#runtime_append_all_bundles()
-"call pathogen#helptags()
+Bundle 'git://github.com/stephpy/vim-php-cs-fixer.git'
+" make a column of increasing or decreasing numbers, dates, or daynames.
+Bundle 'git://github.com/vim-scripts/VisIncr.git'
+" open files and buffers with a minimal number of keystrokes
+"Bundle 'git://github.com/wincent/Commant-T'
 
 " General Settings
 
@@ -40,17 +48,14 @@ set history=50		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
 set autoread		" auto read when file is changed from outside
 
-
 filetype off          " necessary to make ftdetect work on Linux
 syntax on
 filetype on           " Enable filetype detection
 filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins
 
-
 " auto reload vimrc when editing it
 autocmd! bufwritepost .vimrc source ~/.vimrc
-
 
 syntax on		" syntax highlight
 set hlsearch		" search highlighting
@@ -120,10 +125,6 @@ endfunction
 
 "}
 
-
-" C/C++ specific settings
-" C/C++ specific settings
-" C/C++ specific settings
 " C/C++ specific settings
 autocmd FileType c,cpp,cc  set cindent comments=sr:/*,mb:*,el:*/,:// cino=>s,e0,n0,f0,{0,}0,^-1s,:0,=s,g0,h1s,p2,t0,+2,(2,)20,*30
 
@@ -287,22 +288,6 @@ endfun
 "--------------------------------------------------------------------------- 
 " PLUGIN SETTINGS
 "--------------------------------------------------------------------------- 
-
-
-" ------- vim-latex - many latex shortcuts and snippets {
-
-" IMPORTANT: win32 users will need to have 'shellslash' set so that latex
-" can be called correctly.
-set shellslash
-set grepprg=grep\ -nH\ $*
-" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
-" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
-" The following changes the default filetype back to 'tex':
-let g:tex_flavor='latex'
-
-"}
-
-
 " --- AutoClose - Inserts matching bracket, paren, brace or quote 
 " fixed the arrow key problems caused by AutoClose
 if !has("gui_running")	
@@ -318,22 +303,15 @@ if !has("gui_running")
    nmap OD h
 endif
 
-
-
-" --- Command-T
-let g:CommandTMaxHeight = 15
-
 " --- SuperTab
 let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
 let g:SuperTabContextDiscoverDiscovery = ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
 
-
 " --- EasyMotion
 "let g:EasyMotion_leader_key = '<Leader>m' " default is <Leader>w
 hi link EasyMotionTarget ErrorMsg
 hi link EasyMotionShade  Comment
-
 
 " --- TagBar
 " toggle TagBar with F7
@@ -356,4 +334,3 @@ let g:gitgutter_enabled = 1
 
 " --- NERDTree快速鍵
 nnoremap <silent> <F9> :NERDTree<CR>
-
