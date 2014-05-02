@@ -17,7 +17,7 @@ Bundle 'git://github.com/tpope/vim-surround'
 Bundle 'git://github.com/kchmck/vim-coffee-script'
 Bundle 'git://github.com/vim-scripts/YankRing.vim'
 
-Bundle 'git://github.com/msanders/snipmate.vim'
+Bundle 'git://github.com/ervandew/snipmate.vim'
 Bundle 'git://github.com/vim-scripts/AutoComplPop'
 
 " shows a git diff in the 'gutter' (sign column)
