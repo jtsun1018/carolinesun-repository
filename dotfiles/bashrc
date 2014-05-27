@@ -13,6 +13,8 @@ function load_rcfile {
         source $1
     fi
 }
+export LC_ALL="zh_TW.UTF-8"
+export LANG="zh_TW" 
 
 export PATH="$HOME/bin:/usr/local/bin:/bin:/usr/bin:\
 /usr/games:/usr/X11R6/bin:/sbin:/usr/sbin:/usr/local/sbin:/stand\
@@ -26,7 +28,7 @@ export LS_COLORS
 alias  ls='gnuls --color=always --show-control-chars';
 alias  ll='ls -alF';
 #alias  telnet='/usr/local/bin/zh-telnet';
-alias  db='mysql -h dev-2 -u carolinesun -p ';
+alias  db='mysql -h localhost -u carolinesun -p ';
 alias  ba='bash';
 alias  ex='exit';
 alias  grep='grep --color';
@@ -52,7 +54,9 @@ function git_since_last_commit {
     echo "${hours_since_last_commit}h${minutes_since_last_commit}m ";
 }
 
-PS1="test2_[\[\033[1;32m\]\w\[\033[0m\]][\[\033[0;35;40m\]\A\[\033[0m\]]\033[0m\]\[\033[1;36m\]\$(git_branch)\[\033[0;33m\]\$(git_since_last_commit)\[\033[0m\]$"
+PS1="test2_[\[\033[1;32m\]\w\[\033[0m\]][\[\033[0;35;40m\]\A\[\033[0m\]]\033[0m\]\[\033[1;36m\]\$(git_branch)\[\033[0;33m\]\$(git_since_last_commit)\[\033[0m\]$";
+
+#PS1="\h_[\[\033[1;32m\]\w\[\033[0m\]][\[\033[0;35;40m\]\A\[\033[0m\]]\033[0m\]\[\033[1;36m\]\$(git_branch)\[\033[0;33m\]\$(git_since_last_commit)\[\033[0m\]$";
 
 #PS1="_vMdev5_[\u]:\w\[\033[1;36m\]\$(git_branch)\[\033[0m\]\$";
 #PS1="dev5_[\u]:\w\[\033[1;36m\]\$(git_branch)\[\033[0m\]\$";
