@@ -4,7 +4,7 @@
         name = Caroline Sun
 
 [color]
-        ui = auto
+        ui = true
 
 [alias]
         ci = commit
@@ -24,5 +24,9 @@
 
 [core]
         editor = vim
+
+[merge]
+        tool = vim
+
 [push]
 	default = simple
