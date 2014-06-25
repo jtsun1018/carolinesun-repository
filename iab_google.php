@@ -88,3 +88,32 @@ function getAccessToken()
     $access_token = $return_data["access_token"];
     return $access_token;
 }
+
+//查詢訂單狀態
+function getPurchaseStatus($access_token, $product_id, $token)
+{
+    $package_name = ANDROID_PACKAGE_NAME;
+
+    //送出的資料寫入 log 記錄
+    setLog(GOOGLE_IAB_API_CLIENT_RECEIPT_LOG, "package name: " . $package_name . ", product id: " . $product_id . ", token: " . $token . "\n");
+
+    $url = "https://www.googleapis.com/androidpublisher/v1.1/applications/$package_name/inapp/$product_id/purchases/$token?access_token=$access_token";
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+    $result = curl_exec($ch);
+    curl_close($ch);
+    $result = json_decode($result, true);
+
+    //接到的資料寫入 log 記錄
+    setLog(GOOGLE_IAB_API_CLIENT_RECEIPT_LOG, print_r($result, true));
+
+    return $result;
+}
