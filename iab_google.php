@@ -60,3 +60,31 @@ setLog(GOOGLE_IAB_API_CLIENT_LOG, print_r($response_client, true));
 
 echo rc4encrypt(RC4_KEY, json_encode($response_client));
 exit;
+
+//產生連google api需要的access token
+function getAccessToken()
+{
+    $data = array(
+        "grant_type" => "refresh_token",
+        "client_id" => GOOGLE_CLIENT_ID,
+        "client_secret" => GOOGLE_CLIENT_SECRET,
+        "refresh_token" => GOOGLE_REFRESH_TOKEN
+    );
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_URL, 'https://accounts.google.com/o/oauth2/token');
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+    $result = curl_exec($ch);
+    curl_close($ch);
+    $return_data = json_decode($result, true);
+    $access_token = $return_data["access_token"];
+    return $access_token;
+}
