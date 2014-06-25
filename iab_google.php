@@ -344,3 +344,13 @@ function processTrans($msno, $terr_id, $trans_data)
     }
     return array('1', '', strtotime($params['last']));
 }
+
+//記錄 input & output
+function setLog($filename, $log_string)
+{
+    file_put_contents(
+        $filename,
+        date("Y-m-d H:i:s") . "\n" . $_SERVER['REMOTE_ADDR'] . "\n" . $log_string . "\n",
+        FILE_APPEND
+    );
+}
