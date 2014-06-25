@@ -280,3 +280,67 @@ function processPurchaseResult($trans_data)
     );
     return $trans_re;
 }
+
+//寫交易記錄, 開通使用期
+function processTrans($msno, $terr_id, $trans_data)
+{
+    global $t_pkg;
+    $billing = new Billing('', $terr_id);
+
+    //取得 memeber
+    if (!$billing->getMemberByMsno($msno)) {
+        return array('0', 'member table 操作異常，需重送 receipt', '');
+    }
+
+    //查是否存過receipt
+    $sql = sprintf(
+        "SELECT * FROM kkbox_member.google_iab_receipt WHERE order_id='%s'",
+        mysql_real_escape_string($trans_data['orderId'])
+    );
+    $res = $billing->_dao_billing->db->query($sql);
+    if ($billing->_dao_billing->db->is_fail()) {                                //查詢失敗, 需重送此筆訂單
+        return array('0', 'google_iab_receipt table 操作異常', '');
+    } elseif (0 === $billing->_dao_billing->db->count($res)) {
+        return array('0', '收據尚未驗證通過，需重送 receipt', '');              //沒寫過receipt table
+    } else {
+        $row = $billing->_dao_billing->db->fetch_array($res);
+    }
+
+    //先檢查以前有沒有處理過這筆交易
+    $where = array();
+    $where['t_payment'] = PAYMENT_GOOGLE_IAB;
+    $where['ref_code'] = $trans_data['orderId'];
+    $where['status'] = T_SUCCESS;
+    $old_rows = $billing->_dao_billing->billing_log_select($where);
+    if (is_array($old_rows)) {  //處理過了
+        return array(1, '已處理過這筆訂單', strtotime($old_rows[0]['last']));   //回傳交易成功的時間
+    }
+
+    $pkg = $billing->getBillingPkg($t_pkg, PAYMENT_GOOGLE_IAB);
+
+    // 產生 hid
+    $hid = $billing->hid($billing->_member['uid']);
+    $billing->setHid($hid);
+
+    $billing_data = array();
+    $billing_data['first'] = $trans_data['purchaseTime'];
+    $billing_data['ref_code'] = $trans_data['orderId'];
+    $billing_data['ref_code2'] = $trans_data['productId'];
+    $billing_data['comment'] = 'Google IAB 付費';
+
+    // 增加 member due_date
+    if (!$billing->initBillingLog($billing_data)) {
+        return array('0', 'billing_log table 操作異常，需重送 receipt', '');
+    } else {
+        //更新 billing_log
+        $params['last'] = date('Y-m-d H:i:s');
+        if (!$billing->setBillingLogSuccess($params, 0)) {
+            return array('1', 'billing_log table 操作異常', '');
+        }
+
+        //寄送交易成功通知信
+        $mail_tpl = HOME_DIR . 'public_member_lib/set_language/html_file/' . $billing->getDefaultLang() . '/mail_trans_success.html';
+        $billing->sendTransSuccessMail($billing->_hid, $mail_tpl);
+    }
+    return array('1', '', strtotime($params['last']));
+}
