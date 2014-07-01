@@ -16,6 +16,8 @@ Bundle 'git://github.com/ervandew/supertab'
 Bundle 'git://github.com/tpope/vim-surround'
 Bundle 'git://github.com/kchmck/vim-coffee-script'
 Bundle 'git://github.com/vim-scripts/YankRing.vim'
+"twig color
+Bundle 'git://github.com/beyondwords/vim-twig'
 
 Bundle 'git://github.com/ervandew/snipmate.vim'
 Bundle 'git://github.com/vim-scripts/AutoComplPop'
@@ -48,6 +50,8 @@ set bs=2		" allow backspacing over everything in insert mode
 set history=50		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
 set autoread		" auto read when file is changed from outside
+set list
+set listchars=tab:▷⋅,trail:· "標示tab和行尾空白
 
 filetype off          " necessary to make ftdetect work on Linux
 syntax on
